@@ -16,15 +16,38 @@
   <meta name="twitter:description" content="Independent WordPress & Shopify developer building purposeful, performant sites.">
 
   <!-- Favicon -->
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="icon" href="./favicon.ico?v=1.0.1" type="image/x-icon">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=1.0.1">
 
   <!-- Google Web Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Schibsted+Grotesk:wght@400..800&display=swap" rel="stylesheet">
 
-  <!-- Stylesheet -->
-  <link rel="stylesheet" href="css/style.css">
+  <!-- Future-Proof Asset URL Connector & Trailing Slash Normalizer -->
+  <script>
+    (function() {
+      // Automatically normalize missing trailing slash on directory deployments (e.g., /pathik -> /pathik/)
+      // This prevents relative asset URLs from resolving against the domain root on live servers.
+      var loc = window.location;
+      var path = loc.pathname;
+      if (path && !path.endsWith('/') && !path.split('/').pop().includes('.')) {
+        window.location.replace(path + '/' + loc.search + loc.hash);
+      }
+    })();
+  </script>
+
+  <!-- Preload Critical Stylesheet -->
+  <link rel="preload" href="./css/style.css?v=1.0.1" as="style">
+
+  <!-- Stylesheet Connector with Cache-Busting & Automatic Failover -->
+  <link rel="stylesheet" href="./css/style.css?v=1.0.1" id="main-css" onerror="
+    if (!this.dataset.retried) {
+      this.dataset.retried = '1';
+      var dir = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
+      this.href = window.location.origin + dir + 'css/style.css?v=' + Date.now();
+    }
+  ">
 </head>
 <body>
   <!-- Accessible Skip Link -->
@@ -1245,7 +1268,16 @@
     </div>
   </footer>
 
-  <!-- Script -->
-  <script src="js/main.js"></script>
+  <!-- Script Connector with Defer, Cache-Busting & Automatic Failover -->
+  <script src="./js/main.js?v=1.0.1" id="main-js" defer onerror="
+    if (!this.dataset.retried) {
+      this.dataset.retried = '1';
+      var dir = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
+      var s = document.createElement('script');
+      s.src = window.location.origin + dir + 'js/main.js?v=' + Date.now();
+      s.defer = true;
+      document.body.appendChild(s);
+    }
+  "></script>
 </body>
 </html>
