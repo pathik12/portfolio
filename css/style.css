@@ -115,7 +115,7 @@ body::after {
 
 @media (min-width: 1440px) {
   .shell {
-    padding-inline: 6rem; /* 96px left & right padding on wide monitors */
+    padding-inline: 0rem; /* 96px left & right padding on wide monitors */
   }
 }
 
